@@ -4,7 +4,67 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Vue 3 Fundamentals</title>
   </head>
-  <body></body>
+  <body>
+    <div id="app">
+      <h1>Hello Vue!</h1>
+      <hr/>
+      <h2>Counter</h2>
+      <p> {{ count }} </p>
+      <div>
+        <label for="incrementAmount">Increment by:</label>
+        <input type="number" v-model="incrementAmount" />
+      </div>
+      <button @click="incrementCounter">Counter</button>
+      <hr/>
+      <h2>Numbers</h2>
+      <p v-if="message.length % 2 === 0">Even: {{ message }}</p>
+      <p v-else>Odd: {{ message }}</p>
+      <ul>
+        <li v-for="number in listOfNumbers">
+          <p>{{ number }}</p>
+          <button @click="favoriteNumber(number)">Favorite Number</button>
+        </li>
+      </ul>
+      <p><span v-for="(number, index) in listOfNumbers">{{ number }}{{ index === listOfNumbers.length - 1 ? "" : ", " }} </span></p>
+      <h3>Favorite Numbers</h3>
+      <ul v-if="favoriteList.length > 0">
+        <li v-for="number in favoriteList">{{ number }}</li>
+      </ul>
+      <p v-else>No favorite numbers yet.</p>
+      <h3>New Number</h3>
+      <p>{{ newNumber }}</p>
+      <label for="number-input">Number </label>
+      <input type="text" v-model="newNumber.input" @keyup.enter="addNewNumber"/>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      Vue.createApp({
+        data: () => ({
+          count: 0,
+          incrementAmount: 1,
+          favoriteList: [],
+          message: "My message.",
+          listOfNumbers: [1, 2, 3, 4, 5],
+          newNumber: { input: null }
+        }),
+        methods: {
+          addNewNumber() {
+            this.listOfNumbers.push(this.newNumber.input)
+            this.newNumber = { input: null }
+          },
+          favoriteNumber(number) {
+            this.favoriteList.push(number)
+          },
+          changeIncrementAmount(e) {
+            this.incrementAmount = event.target.value;
+          },
+          incrementCounter() {
+            this.count += this.incrementAmount;
+          }
+        }
+      }).mount("#app")
+    </script>
+  </body>
 </html>
